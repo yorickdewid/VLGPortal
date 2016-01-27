@@ -53,7 +53,21 @@ class User implements ArrayAccess, Contracts\User
      *
      * @var string
      */
-    public $isActive = false;
+    private $isActive = false;
+
+    /**
+     * The user's avatar image URL.
+     *
+     * @var string
+     */
+    private $canRead = false;
+
+    /**
+     * The user's avatar image URL.
+     *
+     * @var string
+     */
+    private $canWrite = false;
 
     /**
      * The user's avatar image URL.
@@ -148,6 +162,26 @@ class User implements ArrayAccess, Contracts\User
     public function isActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Get the avatar / image URL for the user.
+     *
+     * @return string
+     */
+    public function canRead()
+    {
+        return $this->canRead;
+    }
+
+    /**
+     * Get the avatar / image URL for the user.
+     *
+     * @return string
+     */
+    public function canWrite()
+    {
+        return $this->canWrite;
     }
 
     /**

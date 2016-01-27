@@ -91,6 +91,8 @@ abstract class AbstractProvider implements ProviderContract
             'phone' => $user['user']['phone'],
             'mobile' => $user['user']['mobile'],
             'isActive' => $user['user']['active'],
+            'canRead' => $user['user']['app_read'],
+            'canWrite' => $user['user']['app_write'],
             'created' => $user['user']['created_at'],
             'updated' => $user['user']['updated_at'],
         ]);

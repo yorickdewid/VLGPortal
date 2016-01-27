@@ -8,12 +8,26 @@ use VLG\GSSAuth\Contracts\Provider as ProviderContract;
 class VLGPortalProvider extends AbstractProvider implements ProviderContract
 {
     /**
+     * The HTTP request instance.
+     *
+     * @var Request
+     */
+    // private $api_url = 'http://localhost:7070';
+    private $api_url = 'https://www.rotterdam-vlg.com';
+
+    /**
+     * The HTTP request instance.
+     *
+     * @var Request
+     */
+    private $api_version = 'v1';
+
+    /**
      * {@inheritdoc}
      */
     protected function getAuthUrl()
     {
-        return $this->buildAuthUrlFromBase('https://www.rotterdam-vlg.com/login');
-        // return $this->buildAuthUrlFromBase('http://localhost:7070/login');
+        return $this->buildAuthUrlFromBase($this->api_url . '/login');
     }
 
     /**
@@ -21,8 +35,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      */
     protected function getUserByToken()
     {
-        $userUrl = 'https://www.rotterdam-vlg.com/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
-        // $userUrl = 'http://localhost:7070/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+        $userUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
         $response = $this->getHttpClient()->get(
             $userUrl
@@ -39,7 +52,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      */
     protected function getCompanyByToken($token)
     {
-        $companyUrl = 'https://www.rotterdam-vlg.com/api/endpoint/user_company?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+        $companyUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_company?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
         try {
             $response = $this->getHttpClient()->get(
