@@ -12,8 +12,8 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      */
     protected function getAuthUrl()
     {
-        // return $this->buildAuthUrlFromBase('https://www.rotterdam-vlg.com/login');
-        return $this->buildAuthUrlFromBase('http://localhost:7070/login');
+        return $this->buildAuthUrlFromBase('https://www.rotterdam-vlg.com/login');
+        // return $this->buildAuthUrlFromBase('http://localhost:7070/login');
     }
 
     /**
@@ -21,20 +21,14 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      */
     protected function getUserByToken()
     {
-        // $userUrl = 'https://www.rotterdam-vlg.com/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
-        $userUrl = 'http://localhost:7070/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+        $userUrl = 'https://www.rotterdam-vlg.com/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+        // $userUrl = 'http://localhost:7070/api/endpoint/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
         $response = $this->getHttpClient()->get(
             $userUrl
         );
 
-        $user = json_decode($response->getBody(), true);
-
-        /*if (in_array('user:email', $this->scopes)) {
-            $user['email'] = $this->getEmailByToken($token);
-        }*/
-
-        return $user;
+        return json_decode($response->getBody(), true);
     }
 
     /**
