@@ -12,8 +12,8 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      *
      * @var Request
      */
-    // private $api_url = 'http://localhost:7070';
-    private $api_url = 'https://www.rotterdam-vlg.com';
+    private $api_url = 'http://localhost:7070';
+    // private $api_url = 'https://www.rotterdam-vlg.com';
 
     /**
      * The HTTP request instance.
@@ -39,6 +39,20 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
 
         $response = $this->getHttpClient()->get(
             $userUrl
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdminByToken()
+    {
+        $adminUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_isadmin?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+
+        $response = $this->getHttpClient()->get(
+            $adminUrl
         );
 
         return json_decode($response->getBody(), true);

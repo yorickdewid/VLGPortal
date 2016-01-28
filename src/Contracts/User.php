@@ -12,30 +12,30 @@ interface User
     public function getId();
 
     /**
-     * Get the nickname / username for the user.
-     *
-     * @return string
-     */
-    public function getNickname();
-
-    /**
      * Get the full name of the user.
      *
      * @return string
      */
-    public function getName();
+    public function isActive();
 
     /**
      * Get the e-mail address of the user.
      *
      * @return string
      */
-    public function getEmail();
+    public function isAdmin();
 
     /**
      * Get the avatar / image URL for the user.
      *
      * @return string
      */
-    public function getAvatar();
+    public function canRead();
+
+    /**
+     * Get the avatar / image URL for the user.
+     *
+     * @return string
+     */
+    public function canWrite();
 }

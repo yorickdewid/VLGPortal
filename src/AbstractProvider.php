@@ -76,6 +76,14 @@ abstract class AbstractProvider implements ProviderContract
     abstract protected function getUserByToken();
 
     /**
+     * Get the raw user for the given access token.
+     *
+     * @param  string  $token
+     * @return array
+     */
+    abstract protected function getAdminByToken();
+
+    /**
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array  $user
@@ -161,6 +169,11 @@ abstract class AbstractProvider implements ProviderContract
         }
 
         $user = $this->mapUserToObject($this->getUserByToken());
+
+        $isadmin = $this->getAdminByToken();
+        if ($isadmin['isadmin']) {
+            $user->makeAdmin();
+        }        
 
         return $user;
     }

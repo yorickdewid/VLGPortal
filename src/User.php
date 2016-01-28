@@ -60,6 +60,13 @@ class User implements ArrayAccess, Contracts\User
      *
      * @var string
      */
+    private $isAdmin = false;
+
+    /**
+     * The user's avatar image URL.
+     *
+     * @var string
+     */
     private $canRead = false;
 
     /**
@@ -115,46 +122,6 @@ class User implements ArrayAccess, Contracts\User
     }
 
     /**
-     * Get the nickname / username for the user.
-     *
-     * @return string
-     */
-    public function getNickname()
-    {
-        return $this->last_name;
-    }
-
-    /**
-     * Get the full name of the user.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Get the e-mail address of the user.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Get the avatar / image URL for the user.
-     *
-     * @return string
-     */
-    public function getAvatar()
-    {
-        return $this->mobile;
-    }
-
-    /**
      * Get the avatar / image URL for the user.
      *
      * @return string
@@ -169,8 +136,32 @@ class User implements ArrayAccess, Contracts\User
      *
      * @return string
      */
+    public function isAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * Get the avatar / image URL for the user.
+     *
+     * @return string
+     */
+    public function makeAdmin()
+    {
+        return $this->isAdmin = true;
+    }
+
+    /**
+     * Get the avatar / image URL for the user.
+     *
+     * @return string
+     */
     public function canRead()
     {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
         return $this->canRead;
     }
 
@@ -181,6 +172,10 @@ class User implements ArrayAccess, Contracts\User
      */
     public function canWrite()
     {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
         return $this->canWrite;
     }
 
