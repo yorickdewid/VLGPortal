@@ -2,7 +2,7 @@
 
 ## Introduction
 
-VLG Portal provides an expressive and fluent interface for RotterdamPortal authentication and authorization. It handles most of the authentication and authorization itself and builds upon trusted JWT tokens. VLG Portal is compatible with the PSR-4 standard.
+VLG Portal provides an expressive and fluent interface for Rotterdam-VLG Portal authentication and authorization. It handles most of the authentication and authorization itself and builds upon trusted JWT tokens. VLG Portal is compatible with the PSR-4 standard.
 
 ## License
 
@@ -56,7 +56,7 @@ You will also need to add credentials for the authentication services your appli
 
 ### Basic Usage
 
-The application is now able to authenticate users. You will need two routes: one for redirecting the user to the RotterdamPortal, and another for receiving the callback from the provider after authentication. For example:
+The application is now able to authenticate users. You will need two routes: one for redirecting the user to the Rotterdam-VLG Portal, and another for receiving the callback from the provider after authentication. For example:
 
 ```php
     Route::get('auth', 'AuthController@redirectToProvider');
