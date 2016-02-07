@@ -170,6 +170,10 @@ abstract class AbstractProvider implements ProviderContract
 
         $user = $this->mapUserToObject($this->getUserByToken());
 
+        if (!isset($user->id)) {
+            throw new Exception("No valid user");
+        }
+
         $isadmin = $this->getAdminByToken();
         if ($isadmin['isadmin']) {
             $user->makeAdmin();

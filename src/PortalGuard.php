@@ -25,12 +25,16 @@ class PortalGuard implements Guard {
      */
     public function callback()
     {
-        $portal = Portal::driver('vlgportal')->handle();
-        if ($portal->isTokenValid()) {
-            session()->set('portaltoken', $portal->token());
-            session()->set('portaluser', $portal->user());
+        try {
+            $portal = Portal::driver('vlgportal')->handle();
+            if ($portal->isTokenValid()) {
+                session()->set('portaltoken', $portal->token());
+                session()->set('portaluser', $portal->user());
 
-            return true;
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
         }
 
         return false;

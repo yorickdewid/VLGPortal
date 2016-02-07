@@ -36,7 +36,7 @@ class JwtToken implements Contracts\Token
 
     	$parts = explode(".", $raw);
     	if (count($parts) != 3){
-    		// thow something
+    		throw new Exception("Token invalid");
     	}
 
     	$header = base64_decode($parts[0]);

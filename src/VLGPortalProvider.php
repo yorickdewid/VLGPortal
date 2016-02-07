@@ -51,9 +51,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $adminUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_isadmin?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get(
-            $adminUrl
-        );
+        $response = $this->getHttpClient()->get($adminUrl);
 
         return json_decode($response->getBody(), true);
     }
@@ -68,19 +66,9 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $companyUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_company?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        try {
-            $response = $this->getHttpClient()->get(
-                $companyUrl, $this->getRequestOptions()
-            );
-        } catch (Exception $e) {
-            return;
-        }
+        $response = $this->getHttpClient()->get($companyUrl);
 
-        /*foreach (json_decode($response->getBody(), true) as $email) {
-            if ($email['primary'] && $email['verified']) {
-                return $email['email'];
-            }
-        }*/
+        return json_decode($response->getBody(), true);
     }
 
 }
