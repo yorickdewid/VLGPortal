@@ -156,6 +156,14 @@ abstract class AbstractProvider implements ProviderContract
     {
         $this->jwtToken = new JwtToken($this->getRawToken());
 
+        if ($this->jwtToken->pub != $this->publicToken) {
+            throw new Exception("Token invalid for application");
+        }
+
+        if ($this->jwtToken->app != $_SERVER['SERVER_NAME']) {
+            throw new Exception("Token invalid for application");
+        }
+
         return $this;
     }
 
