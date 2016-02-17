@@ -84,6 +84,22 @@ abstract class AbstractProvider implements ProviderContract
     abstract protected function getAdminByToken();
 
     /**
+     * Get the raw user for the given access token.
+     *
+     * @param  string  $token
+     * @return array
+     */
+    abstract protected function getUsers();
+
+    /**
+     * Get the raw user for the given access token.
+     *
+     * @param  string  $token
+     * @return array
+     */
+    abstract protected function getCompanies();
+
+    /**
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array  $user
@@ -208,6 +224,46 @@ abstract class AbstractProvider implements ProviderContract
     public function token()
     {
         return $this->jwtToken;
+    }
+
+    /**
+     * Get the code from the request.
+     *
+     * @return string
+     */
+    public function setToken($token)
+    {
+        return $this->jwtToken = $token;
+    }
+
+    /**
+     * Get the code from the request.
+     *
+     * @return string
+     */
+    public function portalUsers()
+    {
+        $users = $this->getUsers();
+        if (!$users) {
+            throw new InvalidStatusException;
+        }
+
+        return $users;
+    }
+
+    /**
+     * Get the code from the request.
+     *
+     * @return string
+     */
+    public function portalCompanies()
+    {
+        $companies = $this->getCompanies();
+        if (!$companies) {
+            throw new InvalidStatusException;
+        }
+
+        return $companies;
     }
 
     /**

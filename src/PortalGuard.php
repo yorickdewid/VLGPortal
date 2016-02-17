@@ -87,6 +87,16 @@ class PortalGuard implements Guard {
     }
 
     /**
+     * Get the currently authenticated user.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    public function token()
+    {
+        return session()->get('portaltoken');
+    }
+
+    /**
      * Get the ID for the currently authenticated user.
      *
      * @return int|null
