@@ -50,7 +50,7 @@ abstract class AbstractProvider implements ProviderContract
      *
      * @var int Can be either PHP_QUERY_RFC3986 or PHP_QUERY_RFC1738.
      */
-    protected $cacheLifetime = 1440 * 3;
+    protected $cacheLifetime = 1440;
 
     /**
      * Create a new provider instance.
@@ -278,7 +278,7 @@ abstract class AbstractProvider implements ProviderContract
             }
 
             Cache::put('portal_companies', $new_companies, $this->cacheLifetime);
-            return $new_users;
+            return $new_companies;
         });
 
         return $companies;
