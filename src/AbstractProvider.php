@@ -2,6 +2,7 @@
 
 namespace VLG\GSSAuth;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +44,13 @@ abstract class AbstractProvider implements ProviderContract
      * @var int Can be either PHP_QUERY_RFC3986 or PHP_QUERY_RFC1738.
      */
     protected $encodingType = PHP_QUERY_RFC1738;
+
+    /**
+     * The type of the encoding in the query.
+     *
+     * @var int Can be either PHP_QUERY_RFC3986 or PHP_QUERY_RFC1738.
+     */
+    protected $cacheLifetime = 1440 * 3;
 
     /**
      * Create a new provider instance.
@@ -243,10 +251,15 @@ abstract class AbstractProvider implements ProviderContract
      */
     public function portalUsers()
     {
-        $users = $this->getUsers();
-        if (!$users) {
-            throw new InvalidStatusException;
-        }
+        $users = Cache::get('portal_users', function() {
+            $new_users = $this->getUsers();
+            if (!$new_users) {
+                throw new InvalidStatusException;
+            }
+
+            Cache::put('portal_users', $new_users, $this->cacheLifetime);
+            return $new_users;
+        });
 
         return $users;
     }
@@ -258,10 +271,15 @@ abstract class AbstractProvider implements ProviderContract
      */
     public function portalCompanies()
     {
-        $companies = $this->getCompanies();
-        if (!$companies) {
-            throw new InvalidStatusException;
-        }
+        $companies = Cache::get('portal_companies', function() {
+            $new_companies = $this->getCompanies();
+            if (!$new_companies) {
+                throw new InvalidStatusException;
+            }
+
+            Cache::put('portal_companies', $new_companies, $this->cacheLifetime);
+            return $new_users;
+        });
 
         return $companies;
     }
