@@ -95,4 +95,16 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
         return json_decode($response->getBody(), true);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getCompanyUsers($id)
+    {
+        $usersUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/company/' . $id . '/users?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+
+        $response = $this->getHttpClient()->get($usersUrl);
+
+        return json_decode($response->getBody(), true);
+    }
+
 }

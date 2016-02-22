@@ -108,6 +108,14 @@ abstract class AbstractProvider implements ProviderContract
     abstract protected function getCompanies();
 
     /**
+     * Get the raw user for the given access token.
+     *
+     * @param  string  $token
+     * @return array
+     */
+    abstract protected function getCompanyUsers($id);
+
+    /**
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array  $user
@@ -282,6 +290,26 @@ abstract class AbstractProvider implements ProviderContract
         });
 
         return $companies;
+    }
+
+    /**
+     * Get the code from the request.
+     *
+     * @return string
+     */
+    public function portalCompanyUsers($id)
+    {
+        $users = Cache::get('portal_company_users', function() use ($id) {
+            $new_users = $this->getCompanyUsers($id);
+            if (!$new_users) {
+                throw new InvalidStatusException;
+            }
+
+            Cache::put('portal_company_users', $new_users, $this->cacheLifetime);
+            return $new_users;
+        });
+
+        return $users;
     }
 
     /**
