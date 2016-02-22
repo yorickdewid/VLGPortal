@@ -299,13 +299,13 @@ abstract class AbstractProvider implements ProviderContract
      */
     public function portalCompanyUsers($id)
     {
-        $users = Cache::get('portal_company_users', function() use ($id) {
+        $users = Cache::get('portal_company_users_' . $id, function() use ($id) {
             $new_users = $this->getCompanyUsers($id);
             if (!$new_users) {
                 throw new InvalidStatusException;
             }
 
-            Cache::put('portal_company_users', $new_users, $this->cacheLifetime);
+            Cache::put('portal_company_users_' . $id, $new_users, $this->cacheLifetime);
             return $new_users;
         });
 

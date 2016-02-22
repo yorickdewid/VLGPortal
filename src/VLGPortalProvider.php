@@ -12,8 +12,8 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      *
      * @var Request
      */
-    // private $api_url = 'http://localhost:7070';
-    private $api_url = 'https://portal.rotterdam-vlg.com';
+    private $api_url = 'http://localhost:7070';
+    // private $api_url = 'https://portal.rotterdam-vlg.com';
 
     /**
      * The HTTP request instance.
