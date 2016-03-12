@@ -2,6 +2,7 @@
 
 namespace VLG\GSSAuth;
 
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use GuzzleHttp\ClientInterface;
