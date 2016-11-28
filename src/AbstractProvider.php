@@ -173,8 +173,21 @@ abstract class AbstractProvider implements ProviderContract
      */
     protected function getCodeFields()
     {
-        return $fields = [
+        $fields = [
             'endpoint' => $_SERVER['SERVER_NAME'],
+            'token' => $this->publicToken,
+            'timestamp' => time(),
+            'auth' => 'jwtgssauth',
+            'origin' => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        $this_endpoint = $_SERVER['SERVER_NAME'];
+        if ($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443) {
+            $this_endpoint .= ':' . $_SERVER['SERVER_PORT'];
+        }
+
+        return [
+            'endpoint' => $this_endpoint,
             'token' => $this->publicToken,
             'timestamp' => time(),
             'auth' => 'jwtgssauth',
@@ -193,8 +206,16 @@ abstract class AbstractProvider implements ProviderContract
             throw new Exception("Token invalid for application");
         }
 
-        if ($this->jwtToken->app != $_SERVER['SERVER_NAME']) {
+        $location = explode(':', $this->jwtToken->app);
+
+        if ($location[0] != $_SERVER['SERVER_NAME']) {
             throw new Exception("Token invalid for application");
+        }
+
+        if ($location[1]) {
+            if ($location[1] != $_SERVER['SERVER_PORT']) {
+                throw new Exception("Token invalid for application");
+            }
         }
 
         return $this;
@@ -210,7 +231,6 @@ abstract class AbstractProvider implements ProviderContract
         }
 
         $user = $this->mapUserToObject($this->getUserByToken());
-
         if (!isset($user->id)) {
             throw new Exception("No valid user");
         }
