@@ -24,6 +24,14 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     /**
      * {@inheritdoc}
      */
+    protected function setAuthUrl($host)
+    {
+        return $this->api_url = $host;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getAuthUrl()
     {
         return $this->buildAuthUrlFromBase($this->api_url . '/login');

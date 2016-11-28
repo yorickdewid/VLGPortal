@@ -41,10 +41,16 @@ class PortalManager extends Manager implements Contracts\Factory
      */
     public function buildProvider($provider, $config)
     {
+        $host = null;
+        if (isset($config['host'])) {
+            $host = $config['host'];
+        }
+
         return new $provider(
             $this->app['request'],
             $config['key'],
-            $config['secret']
+            $config['secret'],
+            $host
         );
     }
 

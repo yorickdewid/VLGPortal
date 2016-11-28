@@ -61,17 +61,28 @@ abstract class AbstractProvider implements ProviderContract
      * @param  string  $privateToken
      * @return void
      */
-    public function __construct(Request $request, $publicToken, $privateToken)
+    public function __construct(Request $request, $publicToken, $privateToken, $endpointHost = null)
     {
         $this->request = $request;
         $this->publicToken = $publicToken;
         $this->privateToken = $privateToken;
+
+        if (!empty($endpointHost)) {
+            $this->setAuthUrl($endpointHost);
+        }
     }
+
+    /**
+     * Set the authentication URL for the provider.
+     *
+     * @param  string   $host
+     * @return void
+     */
+    abstract protected function setAuthUrl($host);
 
     /**
      * Get the authentication URL for the provider.
      *
-     * @param  string
      * @return string
      */
     abstract protected function getAuthUrl();
@@ -79,7 +90,6 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
      * @return array
      */
     abstract protected function getUserByToken();
@@ -87,7 +97,6 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
      * @return array
      */
     abstract protected function getAdminByToken();
@@ -95,7 +104,6 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
      * @return array
      */
     abstract protected function getUsers();
@@ -103,7 +111,6 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
      * @return array
      */
     abstract protected function getCompanies();
@@ -111,7 +118,7 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
+     * @param  int  $id
      * @return array
      */
     abstract protected function getCompanyUsers($id);
