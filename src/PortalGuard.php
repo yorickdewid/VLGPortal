@@ -28,12 +28,23 @@ class PortalGuard implements Guard {
         try {
             $portal = Portal::driver('vlgportal')->handle();
             if ($portal->isTokenValid()) {
-                session()->set('portaltoken', $portal->token());
-                session()->set('portaluser', $portal->user());
+                $user = $portal->user();
+                $token = $portal->token();
 
-                return true;
+                if ($user && $token) {
+                    session()->set('portaluser', $portal->user());
+                    session()->set('portaltoken', $portal->token());
+
+                    return true;
+                }
             }
         } catch (Exception $e) {
+            session()->forget('portaluser');
+            session()->forget('portaltoken');
+            return false;
+        } catch (InvalidStatusException $e) {
+            session()->forget('portaluser');
+            session()->forget('portaltoken');
             return false;
         }
 
@@ -57,13 +68,19 @@ class PortalGuard implements Guard {
      */
     public function check()
     {
-        if (session()->get('portaltoken')) {
-            if (session()->get('portaltoken')->isValid()) {
-                return true;
-            }
+        if (!session()->has('portaltoken')) {
+            return false;
+        }
+        
+        if (!session()->get('portaltoken')->isValid()) {
+            return false;
         }
 
-        return false;
+        if (!session()->has('portaluser')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
