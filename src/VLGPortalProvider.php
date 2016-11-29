@@ -38,17 +38,38 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     }
 
     /**
+     * Get the email for the given access token.
+     *
+     * @param  string  $token
+     * @return string|null
+     */
+    protected function performRequest($url)
+    {
+        $response = $this->getHttpClient()->get($url);
+        if ($response->getStatusCode() != 200) {
+            throw new InvalidStatusException;
+        }
+
+        $response_object = json_decode($response->getBody(), true);
+        if (is_array($response_object)) {
+            if (isset($response_object[0])) {
+                if ($response_object[0] == 'application_invalid') {
+                    throw new InvalidStatusException;
+                }
+            }
+        }
+
+        return $response_object;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getUserByToken()
     {
         $userUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get(
-            $userUrl
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($userUrl);
     }
 
     /**
@@ -58,9 +79,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $adminUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_isadmin?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get($adminUrl);
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($adminUrl);
     }
 
     /**
@@ -73,9 +92,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $companyUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/user_company?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get($companyUrl);
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($companyUrl);
     }
 
     /**
@@ -85,9 +102,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $usersUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/users?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get($usersUrl);
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($usersUrl);
     }
 
     /**
@@ -95,11 +110,9 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
      */
     protected function getCompanies()
     {
-        $usersUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/companies?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
+        $companiesUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/companies?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get($usersUrl);
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($companiesUrl);
     }
 
     /**
@@ -109,9 +122,7 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     {
         $usersUrl = $this->api_url . '/api/endpoint/' . $this->api_version . '/company/' . $id . '/users?token=' . $this->jwtToken . '&privkey=' . $this->privateToken;
 
-        $response = $this->getHttpClient()->get($usersUrl);
-
-        return json_decode($response->getBody(), true);
+        return $this->performRequest($usersUrl);
     }
 
 }

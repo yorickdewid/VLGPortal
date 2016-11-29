@@ -219,7 +219,7 @@ abstract class AbstractProvider implements ProviderContract
             throw new Exception("Token invalid for application");
         }
 
-        if ($location[1]) {
+        if (isset($location[1])) {
             if ($location[1] != $_SERVER['SERVER_PORT']) {
                 throw new Exception("Token invalid for application");
             }
