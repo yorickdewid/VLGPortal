@@ -44,12 +44,13 @@ class PortalManager extends Manager implements Contracts\Factory
             $host = $config['host'];
         }
 
+        $options = array_except($config, ['key', 'secret', 'host']);
         return new $provider(
             $this->app['request'],
             $config['key'],
             $config['secret'],
             $host,
-            array_except($config, ['key', 'secret', 'host'])
+            $options
         );
     }
 

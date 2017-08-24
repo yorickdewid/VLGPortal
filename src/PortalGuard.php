@@ -32,8 +32,8 @@ class PortalGuard implements Guard {
                 $token = $portal->token();
 
                 if ($user && $token) {
-                    session()->set('portaluser', $portal->user());
-                    session()->set('portaltoken', $portal->token());
+                    session()->put('portaluser', $portal->user());
+                    session()->put('portaltoken', $portal->token());
 
                     return true;
                 }
