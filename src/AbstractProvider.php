@@ -61,7 +61,7 @@ abstract class AbstractProvider implements ProviderContract
      * @param  string  $privateToken
      * @return void
      */
-    public function __construct(Request $request, $publicToken, $privateToken, $endpointHost = null)
+    public function __construct(Request $request, $publicToken, $privateToken, $endpointHost = null, array $options = [])
     {
         $this->request = $request;
         $this->publicToken = $publicToken;
@@ -70,7 +70,19 @@ abstract class AbstractProvider implements ProviderContract
         if (!empty($endpointHost)) {
             $this->setAuthUrl($endpointHost);
         }
+
+        if (!empty($options)) {
+            $this->setOptions($options);
+        }
     }
+
+    /**
+     * Set options for the provider.
+     *
+     * @param  array   $options
+     * @return void
+     */
+    abstract protected function setOptions(array $options);
 
     /**
      * Set the authentication URL for the provider.

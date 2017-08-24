@@ -22,6 +22,21 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     private $api_version = 'v1';
 
     /**
+     * Provider options.
+     *
+     * @var Request
+     */
+    private $options = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setOptions(array $options)
+    {
+        return $this->options = $options;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setAuthUrl($host)
@@ -38,14 +53,22 @@ class VLGPortalProvider extends AbstractProvider implements ProviderContract
     }
 
     /**
-     * Get the email for the given access token.
+     * Get the url for the given access token.
      *
      * @param  string  $token
      * @return string|null
      */
     protected function performRequest($url)
     {
-        $response = $this->getHttpClient()->get($url);
+        $request_options = [];
+
+        if (array_key_exists('ssl_verify', $this->options)) {
+            if ($this->options['ssl_verify'] === false) {
+                $request_options['verify'] = false;
+            }
+        }
+
+        $response = $this->getHttpClient()->get($url, $request_options);
         if ($response->getStatusCode() != 200) {
             throw new InvalidStatusException;
         }

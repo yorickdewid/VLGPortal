@@ -27,9 +27,7 @@ class PortalManager extends Manager implements Contracts\Factory
     {
         $config = $this->app['config']['services.vlgportal'];
 
-        return $this->buildProvider(
-            'VLG\GSSAuth\VLGPortalProvider', $config
-        );
+        return $this->buildProvider('VLG\GSSAuth\VLGPortalProvider', $config);
     }
 
     /**
@@ -50,7 +48,8 @@ class PortalManager extends Manager implements Contracts\Factory
             $this->app['request'],
             $config['key'],
             $config['secret'],
-            $host
+            $host,
+            array_except($config, ['key', 'secret', 'host'])
         );
     }
 

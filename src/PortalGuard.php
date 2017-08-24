@@ -2,7 +2,7 @@
 
 namespace VLG\GSSAuth;
 
-use \Portal;
+use Portal;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Authenticatable;
 
